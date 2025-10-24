@@ -4,6 +4,8 @@
 
 using namespace std;
 
+// Zadanie 2
+
 string z2_symbole_txt_path = "../zalaczniki-2025/symbole.txt";
 
 // Zadanie 2.1
@@ -203,11 +205,159 @@ void Zadanie2_4() {
     wynik.close();
 }
 
+// Zadanie 3
+
+string z3_dron_txt_path = "../zalaczniki-2025/dron.txt";
+
+// Zadanie 3.1
+// sito euklidesa - https://www.matemaks.pl/najwiekszy-wspolny-dzielnik-nwd.html
+int nwd(int a, int b){
+    while (b != 0) {
+        int pom = b;
+        b = a % b;
+        a = pom;
+    }
+    return a;
+}
+void Zadanie3_1() {
+    ifstream plik(z3_dron_txt_path);
+    if (!plik.is_open()) {
+        cerr << "Nie udalo sie otworzyc pliku!" << endl;
+        return;
+    }
+
+    ofstream wynik("../wynik3_1.txt");
+
+    int przemieszczenie_x;
+    int przemieszczenie_y;
+    int licznik = 0;
+    while (plik >> przemieszczenie_x >> przemieszczenie_y) {
+        if (przemieszczenie_y < 0) {
+            przemieszczenie_y *= -1;
+        }
+        int result = nwd(przemieszczenie_x, przemieszczenie_y);
+        if (1 < result) {
+            licznik++;
+        }
+    }
+
+    cout << licznik ;
+
+    wynik << licznik ;
+
+    plik.close();
+    wynik.close();
+}
+
+// Zadanie 3.2.a
+
+struct prostokat {
+    struct wspolrzedne lewy_dolny_rog;
+    struct wspolrzedne prawy_gorny_rog;
+};
+
+bool czy_punkt_jest_w_kwadracie(wspolrzedne wspolrzedne) {
+    prostokat kwadrat;
+    kwadrat.lewy_dolny_rog.x = 0;
+    kwadrat.lewy_dolny_rog.y = 0;
+    kwadrat.prawy_gorny_rog.x = 5000;
+    kwadrat.prawy_gorny_rog.y = 5000;
+
+    if (wspolrzedne.x < kwadrat.lewy_dolny_rog.x)
+        return false;
+    if (wspolrzedne.y < kwadrat.lewy_dolny_rog.y)
+        return false;
+    if (wspolrzedne.x > kwadrat.prawy_gorny_rog.x)
+        return false;
+    if (wspolrzedne.y > kwadrat.prawy_gorny_rog.y)
+        return false;
+    return true;
+}
+
+void Zadanie3_2_a() {
+    ifstream plik(z3_dron_txt_path);
+    if (!plik.is_open()) {
+        cerr << "Nie udalo sie otworzyc pliku!" << endl;
+        return;
+    }
+
+    ofstream wynik("../wynik3_2_a.txt");
+
+    int przemieszczenie_x;
+    int przemieszczenie_y;
+    struct wspolrzedne wspolrzedne;
+    wspolrzedne.x = 0;
+    wspolrzedne.y = 0;
+    int licznik = 0;
+    while (plik >> przemieszczenie_x >> przemieszczenie_y) {
+        wspolrzedne.x += przemieszczenie_x;
+        wspolrzedne.y += przemieszczenie_y;
+        if (czy_punkt_jest_w_kwadracie(wspolrzedne)) {
+            licznik++;
+        }
+    }
+    cout << licznik ;
+    wynik << licznik ;
+    plik.close();
+    wynik.close();
+}
+
+// Zadanie 3.2.b
+
+wspolrzedne srodek(wspolrzedne w1, wspolrzedne w2) {
+    wspolrzedne wynik;
+    wynik.x = w1.x + (w2.x - w1.x)/2;
+    wynik.y = w1.y + (w2.y - w1.y)/2;
+    return wynik;
+}
+
+void Zadanie3_2_b() {
+    ifstream plik(z3_dron_txt_path);
+    if (!plik.is_open()) {
+        cerr << "Nie udalo sie otworzyc pliku!" << endl;
+        return;
+    }
+
+    ofstream wynik("../wynik3_2_b.txt");
+
+    int przemieszczenie_x;
+    int przemieszczenie_y;
+    struct wspolrzedne wsp[100];
+    plik >> wsp[0].x >> wsp[0].y;
+
+    for (int i = 1;plik >> przemieszczenie_x >> przemieszczenie_y ; i++ ) {
+        wsp[i].x = wsp[i-1].x + przemieszczenie_x;
+        wsp[i].y = wsp[i-1].y +przemieszczenie_y;
+    }
+    bool search = true;
+    wspolrzedne w1, wsr, w2;
+    for (int i = 0; i < 100 && search; i++) {
+        for (int j = i+1; j < 100 && search; j++) {
+            wspolrzedne sr = srodek(wsp[i], wsp[j]);
+            for (int k = 0; k < 100 && search; k++) {
+                if (wsp[k].x == sr.x && wsp[k].y == sr.y) {
+                    search = false;
+                    w1 = wsp[i];
+                    w2 = wsp[j];
+                    wsr = wsp[k];
+                }
+            }
+        }
+    }
+    cout << "("<< w1.x << " " << w1.y << ") (" << wsr.x << " " << wsr.y << ") (" << w2.x << " " << w2.y << ") ";
+    wynik << "("<< w1.x << " " << w1.y << ") (" << wsr.x << " " << wsr.y << ") (" << w2.x << " " << w2.y << ") ";
+    plik.close();
+    wynik.close();
+}
+
 int main() {
     //Zadanie2_1();
     //Zadanie2_2();
     //Zadanie2_3();
     //Zadanie2_4();
+    //Zadanie3_1();
+    //Zadanie3_2_a();
+    //Zadanie3_2_b();
     return 0;
 
 }
