@@ -4,6 +4,8 @@
 
 using namespace std;
 
+string z2_symbole_txt_path = "../zalaczniki-2025/symbole.txt";
+
 // Zadanie 2.1
 bool czyPalindrom2_1(string tekst) {
     int size = tekst.size() - 1;
@@ -16,7 +18,7 @@ bool czyPalindrom2_1(string tekst) {
 }
 
 void Zadanie2_1() {
-    ifstream plik("../zalaczniki-2025/symbole.txt");
+    ifstream plik(z2_symbole_txt_path);
     if (!plik.is_open()) {
         cerr << "Nie udalo sie otworzyc pliku!" << endl;
         return;
@@ -56,7 +58,7 @@ struct wspolrzedne{
 };
 
 void Zadanie2_2() {
-    ifstream plik("../zalaczniki-2025/symbole.txt");
+    ifstream plik(z2_symbole_txt_path);
     if (!plik.is_open()) {
         cerr << "Nie udalo sie otworzyc pliku!" << endl;
         return;
@@ -119,7 +121,7 @@ int konwertuj_ciag(string ciag) {
 }
 
 void Zadanie2_3() {
-    ifstream plik("../zalaczniki-2025/symbole.txt");
+    ifstream plik(z2_symbole_txt_path);
     if (!plik.is_open()) {
         cerr << "Nie udalo sie otworzyc pliku!" << endl;
         return;
@@ -179,7 +181,7 @@ string konwertuj_liczbe(int liczba) {
 }
 
 void Zadanie2_4() {
-    ifstream plik("../zalaczniki-2025/symbole.txt");
+    ifstream plik(z2_symbole_txt_path);
     if (!plik.is_open()) {
         cerr << "Nie udalo sie otworzyc pliku!" << endl;
         return;
